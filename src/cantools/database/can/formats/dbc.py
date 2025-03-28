@@ -1679,6 +1679,11 @@ def _load_messages(tokens,
 
     messages = []
 
+    def determine_exteded_frame_type(frame_id):
+        if frame_id <= 0x7FF:
+            return False # "Standard Frame (11-bit ID)"
+        else:
+            return True # "Extended Frame (29-bit ID)"
     for message in tokens.get('BO_', []):
         # Any message named VECTOR__INDEPENDENT_SIG_MSG contains
         # signals not assigned to any message. Cantools does not yet
@@ -1689,7 +1694,8 @@ def _load_messages(tokens,
         # Frame id.
         frame_id_dbc = int(message[1])
         frame_id = frame_id_dbc & 0x7fffffff
-        is_extended_frame = bool(frame_id_dbc & 0x80000000)
+        is_extended_frame = determine_exteded_frame_type(frame_id_dbc)
+        # is_extended_frame = bool(frame_id_dbc & 0x80000000)
         frame_format = get_frame_format(frame_id_dbc)
         if frame_format is not None:
             is_fd = frame_format.endswith("CAN_FD")
