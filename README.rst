@@ -1,5 +1,10 @@
 |github-actions| |coverage|
 
+Note
+=====
+
+This forked repository is to fix reading can signal, which is extended (29 bits) without obtaining error.
+
 About
 =====
 
